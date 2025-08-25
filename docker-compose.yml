@@ -1,0 +1,57 @@
+services:
+  backend:
+    build: ./backend
+    container_name: backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend/app/checkpoints:/app/app/checkpoints
+    environment:
+      - MLFLOW_TRACKING_URI=http://mlflow:5000
+      - GIT_PYTHON_REFRESH=quiet
+    networks:
+      - mynet
+
+  frontend-react:
+    build: ./frontend/node-app
+    container_name: frontend-react
+    ports:
+      - "5173:5173"
+    environment:
+      - VITE_API_URL=http://backend:8000
+    depends_on:
+      - backend
+    networks:
+      - mynet
+
+  frontend-admin:
+    build: ./frontend/streamlit-admin
+    container_name: frontend-admin
+    ports:
+      - "8501:8501"
+    environment:
+      - BACKEND_URL=http://backend:8000
+    depends_on:
+      - backend
+    networks:
+      - mynet
+
+  mlflow:
+    image: ghcr.io/mlflow/mlflow:v2.0.1
+    container_name: mlflow
+    ports:
+      - "5000:5000"
+    command: >
+      mlflow server
+      --backend-store-uri sqlite:///mlflow.db
+      --default-artifact-root /mlflow/artifacts
+      --host 0.0.0.0
+      --port 5000
+    volumes:
+      - ./mlruns:/mlflow/artifacts
+    networks:
+      - mynet
+
+networks:
+  mynet:
+    driver: bridge
