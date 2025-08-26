@@ -1,5 +1,5 @@
 # backend/app/tests/test_train.py
-from train import FeedforwardNN
+from app.train import FeedforwardNN
 import torch
 
 def test_model_forward():
