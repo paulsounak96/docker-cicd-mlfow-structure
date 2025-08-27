@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from pydantic import BaseModel
 import torch
-from model import FeedForwardNet
+from app.model import FeedForwardNet
 
 class InputData(BaseModel):
     features: list[float]

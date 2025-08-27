@@ -1,7 +1,7 @@
 import argparse
 import torch
 from torch.utils.data import DataLoader, TensorDataset
-from model import FeedForwardNet
+from app.model import FeedForwardNet
 import mlflow
 import mlflow.pytorch
 import os

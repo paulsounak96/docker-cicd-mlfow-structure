@@ -1,7 +1,7 @@
 import argparse
 import torch
 from torch.utils.data import DataLoader, TensorDataset
-from model import FeedForwardNet
+from app.model import FeedForwardNet
 
 def test_loop(model, dataloader, device):
     model.eval()
